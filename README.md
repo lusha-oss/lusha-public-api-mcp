@@ -2,7 +2,7 @@
 
 A Model Context Protocol (MCP) server for integrating with the Lusha API. This server provides comprehensive person and company lookup capabilities with enterprise-grade error handling, logging, and configuration management.
 
-## 🎉 Latest Updates (v2.0.0)
+## 🎉 Latest Updates (v1.0.0)
 
 This version represents a complete rewrite and enhancement of the original MCP server with enterprise-grade features and best practices. See the [Changelog](#changelog) section for detailed information about all improvements.
 
