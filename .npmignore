@@ -1,0 +1,16 @@
+src/main.ts
+config
+.husky
+.eslintrc
+.eslintignore
+.prettierrc
+.npmrc
+.editorconfig
+Jenkinsfile
+renovate.json
+nest-cli.json
+tsconfig.json
+tsconfig.build.json
+tslint.json
+commitlint.config.js
+package-lock.json

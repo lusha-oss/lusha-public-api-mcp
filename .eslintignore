@@ -1,0 +1,8 @@
+node_modules/
+.idea/
+lusha-ci
+scripts
+build/
+dist/
+pm2.config.js
+commitlint.config.js
