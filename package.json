@@ -1,0 +1,46 @@
+{
+  "name": "@lusha/mcp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "bin": {
+    "lusha-mcp": "build/index.js"
+  },
+  "scripts": {
+    "build": "rm -rf build && tsc",
+    "start": "node build/index.js",
+    "dev": "tsc --watch & nodemon --watch build --exec \"node build/index.js\"",
+    "dev:debug": "LOG_LEVEL=DEBUG npm run dev",
+    "lint": "tsc --noEmit",
+    "clean": "rm -rf build node_modules/.cache",
+    "validate": "npm run lint && npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "commit-and-tag-version",
+    "release:minor": "npm run release -- --release-as minor",
+    "release:patch": "npm run release -- --release-as patch",
+    "release:alpha": "npm run release -- --prerelease alpha",
+    "release:major": "npm run release -- --release-as major",
+    "release:dry-run": "npm run release -- --dry-run",
+    "release:dry-run:alpha": "npm run release:alpha -- --dry-run"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.11.0",
+    "@types/morgan": "^1.9.9",
+    "axios": "^1.7.2",
+    "json-stringify-safe": "^5.0.1",
+    "morgan": "^1.10.0",
+    "winston": "^3.17.0",
+    "zod": "^3.24.2",
+    "zod-to-json-schema": "^3.22.5"
+  },
+  "devDependencies": {
+    "@types/json-stringify-safe": "^5.0.3",
+    "@types/node": "^22.14.0",
+    "@types/winston": "^2.4.4",
+    "commit-and-tag-version": "^12.5.0",
+    "nodemon": "^3.1.9",
+    "typescript": "^5.8.3"
+  }
+}
