@@ -1,6 +1,6 @@
 {
   "name": "@lusha-org/mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "build/index.js",
   "bin": {
     "lusha-mcp": "build/index.js"
@@ -33,7 +33,7 @@
   "author": "Lusha",
   "description": "Lusha MCP Server",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.11.0",
+    "@modelcontextprotocol/sdk": "^1.12.1",
     "@types/morgan": "^1.9.9",
     "axios": "^1.7.2",
     "json-stringify-safe": "^5.0.1",
