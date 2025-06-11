@@ -1,10 +1,16 @@
 {
-  "name": "@lusha/mcp",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "@lusha-org/mcp",
+  "version": "0.0.3",
+  "main": "build/index.js",
   "bin": {
     "lusha-mcp": "build/index.js"
   },
+  "files": [
+    "build/**/*",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
   "scripts": {
     "build": "rm -rf build && tsc",
     "start": "node build/index.js",
@@ -24,7 +30,8 @@
   },
   "keywords": [],
   "license": "ISC",
-  "description": "",
+  "author": "Lusha",
+  "description": "Lusha MCP Server",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.11.0",
     "@types/morgan": "^1.9.9",
@@ -42,5 +49,9 @@
     "commit-and-tag-version": "^12.5.0",
     "nodemon": "^3.1.9",
     "typescript": "^5.8.3"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
