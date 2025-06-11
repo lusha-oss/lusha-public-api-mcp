@@ -1,5 +1,16 @@
 # Changelog
 
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+## 1.0.0 (2025-06-11)
+
+
+### Features
+
+* update readme ([4569887](https://github.com/lusha-oss/lusha-public-api-mcp/commit/45698879ef04ee066c24e6a8580ca32737f87c7c))
+
+# Changelog
+
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
 ##  (2025-06-03)
