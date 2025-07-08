@@ -43,6 +43,7 @@ Add this server to your Claude Desktop configuration:
 | Variable | Description | Default | Required |
 |----------|-------------|---------|----------|
 | `LUSHA_API_KEY` | Your Lusha API key | - | ✅ |
+| `DISABLE_SSL` | Disable SSL certificate verification (useful for development with self-signed certificates) | `false` | ❌ |
 
 ### Example Configuration
 
@@ -53,6 +54,9 @@ LUSHA_API_KEY=your_actual_api_key_here
 # Optional - Customize as needed
 LOG_LEVEL=INFO
 LUSHA_TIMEOUT=45000
+
+# Development only - Skip SSL verification if needed
+# DISABLE_SSL=true
 ```
 
 ## Usage
