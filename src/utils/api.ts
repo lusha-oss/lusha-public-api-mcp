@@ -2,6 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 import { getLushaApiKey, getLushaBaseUrl } from '../config';
 import { ConfigurationError } from './error';
 import { logger } from './logger';
+import https from 'https';
 
 /**
  * Create a configured Axios client for Lusha API
@@ -21,7 +22,12 @@ export const createLushaClient = (): AxiosInstance => {
       "API_KEY": key,
       'Content-Type': 'application/json',
       'User-Agent': 'lusha-mcp/1.0.0'
-    }
+    },
+    ...(process.env.DISABLE_SSL === 'true' && {
+      httpsAgent: new https.Agent({
+        rejectUnauthorized: false
+      })
+    })
   });
 
   // Request interceptor for logging

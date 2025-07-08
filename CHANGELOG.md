@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.1](https://github.com/lusha-oss/lusha-public-api-mcp/compare/v1.1.0...v1.1.1) (2025-07-08)
+
+
+### Features
+
+* add support for optional SSL certificate validation in Axios client ([17c31dd](https://github.com/lusha-oss/lusha-public-api-mcp/commit/17c31ddb9eb949904161994842133bd916d8d63c))
+
 ## [1.1.0](https://github.com/lusha-oss/lusha-public-api-mcp/compare/v1.0.1...v1.1.0) (2025-07-08)
 
 ## [1.0.1](https://github.com/lusha-oss/lusha-public-api-mcp/compare/v1.0.0...v1.0.1) (2025-06-11)
