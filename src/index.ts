@@ -68,7 +68,7 @@ tools.forEach(toolDef => {
   server.tool(
     toolDef.name,
     toolDef.description,
-    toolDef.schema.shape,
+    (toolDef.schema as any).shape,
     createToolHandler(toolDef)
   );
   
