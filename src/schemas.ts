@@ -132,6 +132,57 @@ export const companyBulkLookupSchema = z.object({
   }).optional()
 });
 
+export const contactSearchSchema = z.object({
+  pages: z.object({
+    page: z.number(),
+    size: z.number()
+  }).optional(),
+  offset: z.object({
+    index: z.number(),
+    size: z.number()
+  }).optional(),
+  filters: z.object({
+    contacts: z.object({
+      include: z.object({
+        departments: z.array(z.string()).optional(),
+        seniority: z.array(z.string()).optional(),
+        existing_data_points: z.array(z.string()).optional(),
+        locations: z.array(z.object({
+          continent: z.string().optional(),
+          country: z.string().optional(),
+          city: z.string().optional(),
+          state: z.string().optional(),
+          country_grouping: z.string().optional()
+        })).optional()
+      }).optional(),
+      exclude: z.object({}).optional()
+    }).optional(),
+    companies: z.object({
+      include: z.object({
+        names: z.array(z.string()).optional(),
+        locations: z.array(z.object({
+          country: z.string().optional()
+        })).optional(),
+        technologies: z.array(z.string()).optional(),
+        mainIndustriesIds: z.array(z.string()).optional(),
+        subIndustriesIds: z.array(z.number()).optional(),
+        intentTopics: z.array(z.string()).optional(),
+        sizes: z.array(z.object({
+          min: z.number(),
+          max: z.number()
+        })).optional(),
+        revenues: z.array(z.object({
+          min: z.number(),
+          max: z.number()
+        })).optional(),
+        sics: z.array(z.string()).optional(),
+        naics: z.array(z.string()).optional()
+      }).optional(),
+      exclude: z.object({}).optional()
+    }).optional()
+  })
+});
+
 export {
   personLookupSchema,
   bulkContactSchema,

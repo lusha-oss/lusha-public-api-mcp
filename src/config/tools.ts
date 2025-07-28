@@ -1,6 +1,7 @@
 import { personBulkLookupHandler } from '../tools/personBulkLookup';
 import { companyBulkLookupHandler } from '../tools/companyLookup';
-import { personBulkLookupSchema, companyBulkLookupSchema } from '../schemas';
+import { contactSearchHandler } from '../tools/contactSearch';
+import { personBulkLookupSchema, companyBulkLookupSchema, contactSearchSchema } from '../schemas';
 import { z } from 'zod';
 
 export interface ToolDefinition {
@@ -33,5 +34,17 @@ export const tools: ToolDefinition[] = [
         Each company must have a unique 'id' field for identification in the response.`,
     schema: companyBulkLookupSchema,
     handler: companyBulkLookupHandler
+  },
+  {
+    name: "contactSearch",
+    description: `Search for contacts using various filters in Lusha API.
+        This is step 2 of the prospecting process.
+        IMPORTANT: No credits are charged for searches. Credits are only charged during enrichment.
+        The search supports filtering by:
+        1. Contact properties (departments, seniority, existing data points, locations)
+        2. Company properties (names, locations, technologies, industries, sizes, revenues, etc.)
+        Pagination is supported through either 'pages' or 'offset' parameters.`,
+    schema: contactSearchSchema,
+    handler: contactSearchHandler
   }
 ];
