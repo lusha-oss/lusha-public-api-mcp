@@ -42,9 +42,9 @@ export const tools: ToolDefinition[] = [
     description: `Search for contacts using various filters in Lusha API.
         This is step 2 of the prospecting process.
         IMPORTANT: 
-        - The requestId parameter MUST be the exact UUID received from the contactSearch response
         - MCP sets page size to 25 by default (API's default is 20 if not specified)
         - Page/offset index starts from 0
+        - use contactFilters tool to get the requirement filters for the contact search"
         The search supports filtering by:
         1. Contact properties:
            - departments
