@@ -1,7 +1,8 @@
 import { personBulkLookupHandler } from '../tools/personBulkLookup';
 import { companyBulkLookupHandler } from '../tools/companyLookup';
 import { contactSearchHandler } from '../tools/contactSearch';
-import { personBulkLookupSchema, companyBulkLookupSchema, contactSearchSchema } from '../schemas';
+import { contactEnrichHandler } from '../tools/contactEnrich';
+import { personBulkLookupSchema, companyBulkLookupSchema, contactSearchSchema, contactEnrichSchema } from '../schemas';
 import { z } from 'zod';
 
 export interface ToolDefinition {
@@ -46,5 +47,16 @@ export const tools: ToolDefinition[] = [
         Pagination is supported through either 'pages' or 'offset' parameters.`,
     schema: contactSearchSchema,
     handler: contactSearchHandler
+  },
+  {
+    name: "contactEnrich",
+    description: `Enrich contacts from search results. This is step 3 of the prospecting process.
+        IMPORTANT: 
+        - revealEmails and revealPhones parameters are only available to customers on the Unified Credits pricing plan
+        - Attempting to use these parameters on other plans will result in a 403 Unauthorized error
+        - When neither parameter is used, the API returns both email addresses and phone numbers if available
+        - Credits are charged for enrichment`,
+    schema: contactEnrichSchema,
+    handler: contactEnrichHandler
   }
 ];

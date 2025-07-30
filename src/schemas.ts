@@ -183,6 +183,16 @@ export const contactSearchSchema = z.object({
   })
 });
 
+export const contactEnrichSchema = z.object({
+  requestId: z.string().uuid("Request ID must be a valid UUID").describe("The requestId generated in the Prospecting Search response (UUID)"),
+  contactIds: z.array(z.string())
+    .min(1, "Contact IDs array cannot be empty")
+    .max(100, "Contact IDs array cannot exceed 100 items")
+    .describe("An array containing the contact IDs for enrichment"),
+  revealEmails: z.boolean().optional().describe("Set revealEmails=true to retrieve only the email address of the contact"),
+  revealPhones: z.boolean().optional().describe("Set revealPhones=true to retrieve only the phone number of the contact")
+});
+
 export {
   personLookupSchema,
   bulkContactSchema,
@@ -195,3 +205,4 @@ export type BulkContact = z.infer<typeof bulkContactSchema>;
 export type Company = z.infer<typeof companySchema>;
 export type PersonBulkLookupParams = z.infer<typeof personBulkLookupSchema>;
 export type CompanyBulkLookupParams = z.infer<typeof companyBulkLookupSchema>;
+export type ContactEnrichParams = z.infer<typeof contactEnrichSchema>;
