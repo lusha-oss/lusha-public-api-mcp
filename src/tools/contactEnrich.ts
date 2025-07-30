@@ -52,7 +52,6 @@ export const contactEnrichHandler = async (params: ContactEnrichParams): Promise
       type: "success",
       data: {
         ...response.data,
-        requestId,
         timestamp: new Date().toISOString()
       }
     };
