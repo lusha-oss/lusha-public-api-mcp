@@ -7,5 +7,5 @@ export const getLushaApiKey = (): string => {
 };
 
 export const getLushaBaseUrl = (): string => {
-  return process.env.LUSHA_API_URL || 'https://api.lusha.com';
+  return 'https://api.lusha.com';
 }; 

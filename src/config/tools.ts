@@ -41,10 +41,29 @@ export const tools: ToolDefinition[] = [
     name: "contactSearch",
     description: `Search for contacts using various filters in Lusha API.
         This is step 2 of the prospecting process.
-        IMPORTANT: No credits are charged for searches. Credits are only charged during enrichment.
+        IMPORTANT: 
+        - No credits are charged for searches. Credits are only charged during enrichment.
+        - The requestId parameter MUST be the exact UUID received from the contactSearch response
+        - MCP sets page size to 25 by default (API's default is 20 if not specified)
+        - Page/offset index starts from 0
         The search supports filtering by:
-        1. Contact properties (departments, seniority, existing data points, locations)
-        2. Company properties (names, locations, technologies, industries, sizes, revenues, etc.)
+        1. Contact properties:
+           - departments
+           - seniority
+           - existing data points
+           - countries
+           - locations
+        2. Company properties:
+           - names (company names)
+           - locations (company headquarters)
+           - technologies (tech stack used)
+           - mainIndustriesIds (main industry sectors)
+           - subIndustriesIds (sub-industry categories)
+           - intentTopics (company intent signals)
+           - sizes (employee count ranges)
+           - revenues (revenue ranges)
+           - sics (Standard Industrial Classification codes)
+           - naics (North American Industry Classification System codes)
         Pagination is supported through either 'pages' or 'offset' parameters.`,
     schema: contactSearchSchema,
     handler: contactSearchHandler
