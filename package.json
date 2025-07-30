@@ -19,7 +19,9 @@
     "lint": "tsc --noEmit",
     "clean": "rm -rf build node_modules/.cache",
     "validate": "npm run lint && npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "release": "commit-and-tag-version",
     "release:minor": "npm run release -- --release-as minor",
     "release:patch": "npm run release -- --release-as patch",
@@ -43,11 +45,14 @@
     "zod-to-json-schema": "^3.22.5"
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/json-stringify-safe": "^5.0.3",
     "@types/node": "^22.14.0",
     "@types/winston": "^2.4.4",
     "commit-and-tag-version": "^12.5.0",
+    "jest": "^30.0.5",
     "nodemon": "^3.1.9",
+    "ts-jest": "^29.4.0",
     "typescript": "^5.8.3"
   },
   "publishConfig": {

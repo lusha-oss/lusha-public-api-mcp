@@ -98,6 +98,24 @@ export const personBulkLookupSchema = z.object({
       companySocialId: z.string().optional()
     })).optional(),
     location: z.string().optional()
+  }).refine((contact) => {
+    // Custom validation: must have one of email, linkedinUrl, or (fullName + company)
+    const hasEmail = contact.email && contact.email.trim();
+    const hasLinkedInUrl = contact.linkedinUrl && contact.linkedinUrl.trim();
+    const hasFullName = contact.fullName && contact.fullName.trim();
+    const hasCompany = contact.companies && contact.companies.length > 0 && 
+      contact.companies.some(company => 
+        (company.name && company.name.trim()) || 
+        (company.domain && company.domain.trim())
+      );
+
+    const hasValidEmail = hasEmail;
+    const hasValidLinkedIn = hasLinkedInUrl;
+    const hasNameAndCompany = hasFullName && hasCompany;
+
+    return hasValidEmail || hasValidLinkedIn || hasNameAndCompany;
+  }, {
+    message: "Contact must have one of: (1) email, (2) linkedinUrl, or (3) fullName + company (name or domain)"
   }))
   .min(1, "Contacts array cannot be empty")
   .max(100, "Contacts array cannot exceed 100 items"),
