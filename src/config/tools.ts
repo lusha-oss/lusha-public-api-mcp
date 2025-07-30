@@ -2,7 +2,8 @@ import { personBulkLookupHandler } from '../tools/personBulkLookup';
 import { companyBulkLookupHandler } from '../tools/companyLookup';
 import { contactSearchHandler } from '../tools/contactSearch';
 import { contactEnrichHandler } from '../tools/contactEnrich';
-import { personBulkLookupSchema, companyBulkLookupSchema, contactSearchSchema, contactEnrichSchema } from '../schemas';
+import { contactFiltersHandler } from '../tools/contactFilters';
+import { personBulkLookupSchema, companyBulkLookupSchema, contactSearchSchema, contactEnrichSchema, contactFiltersSchema } from '../schemas';
 import { z } from 'zod';
 
 export interface ToolDefinition {
@@ -52,11 +53,24 @@ export const tools: ToolDefinition[] = [
     name: "contactEnrich",
     description: `Enrich contacts from search results. This is step 3 of the prospecting process.
         IMPORTANT: 
+        - The requestId parameter MUST be the exact UUID received from the contactSearch response
+        - use contactFilters tool to get the requirement filters for the contact search"
         - revealEmails and revealPhones parameters are only available to customers on the Unified Credits pricing plan
         - Attempting to use these parameters on other plans will result in a 403 Unauthorized error
         - When neither parameter is used, the API returns both email addresses and phone numbers if available
         - Credits are charged for enrichment`,
     schema: contactEnrichSchema,
     handler: contactEnrichHandler
+  },
+  {
+    name: "contactFilters",
+    description: `Get available filter values for contact search. Supports:
+        1. departments - List of available departments
+        2. seniority - List of available seniority levels
+        3. existing_data_points - List of available data points
+        4. all_countries - List of available countries
+        5. locations - Search for locations by text (requires locationSearchText parameter)`,
+    schema: contactFiltersSchema,
+    handler: contactFiltersHandler
   }
 ];

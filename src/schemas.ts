@@ -145,7 +145,7 @@ export const contactSearchSchema = z.object({
     contacts: z.object({
       include: z.object({
         departments: z.array(z.string()).optional(),
-        seniority: z.array(z.string()).optional(),
+        seniority: z.array(z.number()).optional(),
         existing_data_points: z.array(z.string()).optional(),
         locations: z.array(z.object({
           continent: z.string().optional(),
@@ -193,6 +193,16 @@ export const contactEnrichSchema = z.object({
   revealPhones: z.boolean().optional().describe("Set revealPhones=true to retrieve only the phone number of the contact")
 });
 
+export const contactFiltersSchema = z.object({
+  filterType: z.enum([
+    "departments",
+    "seniority",
+    "existing_data_points",
+    "all_countries"
+  ]).describe("The type of filter to retrieve"),
+  locationSearchText: z.string().optional().describe("Search text for location when using locations filter")
+});
+
 export {
   personLookupSchema,
   bulkContactSchema,
@@ -206,3 +216,4 @@ export type Company = z.infer<typeof companySchema>;
 export type PersonBulkLookupParams = z.infer<typeof personBulkLookupSchema>;
 export type CompanyBulkLookupParams = z.infer<typeof companyBulkLookupSchema>;
 export type ContactEnrichParams = z.infer<typeof contactEnrichSchema>;
+export type ContactFiltersParams = z.infer<typeof contactFiltersSchema>;

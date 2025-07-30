@@ -45,7 +45,6 @@ export const contactSearchHandler = async (params: any): Promise<ToolResponse> =
       type: "success",
       data: {
         ...response.data,
-        requestId,
         timestamp: new Date().toISOString()
       }
     };
