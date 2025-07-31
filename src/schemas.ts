@@ -134,13 +134,13 @@ export const companyBulkLookupSchema = z.object({
 
 export const contactSearchSchema = z.object({
   pages: z.object({
-    page: z.number().min(0, "Page number must be 0 or greater").default(0),
-    size: z.number().min(10, "Page size must be at least 10").default(25)
-  }).default({ page: 0, size: 25 }).optional(),
+    page: z.number().min(0, "Page number must be 0 or greater"),
+    size: z.number().min(10, "Page size must be at least 10")
+  }).optional(),
   offset: z.object({
-    index: z.number().min(0, "Offset index must be 0 or greater").default(0),
-    size: z.number().min(10, "Offset size must be at least 10").default(25)
-  }).default({ index: 0, size: 25 }).optional(),
+    index: z.number().min(0, "Offset index must be 0 or greater"),
+    size: z.number().min(10, "Offset size must be at least 10")
+  }).optional(),
   filters: z.object({
     contacts: z.object({
       include: z.object({
