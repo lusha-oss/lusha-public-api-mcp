@@ -44,6 +44,7 @@ export const tools: ToolDefinition[] = [
     description: `Search for contacts using various filters in Lusha API.
         This is step 2 of the prospecting process.
         IMPORTANT: 
+        - After returning search results, ALWAYS ask the user if they want to enrich specific contacts
         - MCP sets page size to 25 by default (API's default is 20 if not specified)
         - Page/offset index starts from 0
         - use contactFilters tool to get the requirement filters for the contact search"
@@ -74,11 +75,11 @@ export const tools: ToolDefinition[] = [
     description: `Enrich contacts from search results. This is step 3 of the prospecting process.
         IMPORTANT: 
         - The requestId parameter MUST be the exact UUID received from the contactSearch response
+        - ALWAYS ask the user which specific contacts they want to enrich before proceeding
         - use contactFilters tool to get the requirement filters for the contact search"
         - revealEmails and revealPhones parameters are only available to customers on the Unified Credits pricing plan
         - Attempting to use these parameters on other plans will result in a 403 Unauthorized error
-        - When neither parameter is used, the API returns both email addresses and phone numbers if available
-        - Credits are charged for enrichment`,
+        - When neither parameter is used, the API returns both email addresses and phone numbers if available`,
     schema: contactEnrichSchema,
     handler: contactEnrichHandler
   },
