@@ -2,7 +2,8 @@ import { personBulkLookupHandler } from '../tools/personBulkLookup';
 import { companyBulkLookupHandler } from '../tools/companyLookup';
 import { companyProspectingHandler } from '../tools/companyProspecting';
 import { companyEnrichHandler } from '../tools/companyEnrich';
-import { personBulkLookupSchema, companyBulkLookupSchema, companyProspectingSchema, companyEnrichSchema } from '../schemas';
+import { companyFiltersHandler } from '../tools/companyFilters';
+import { personBulkLookupSchema, companyBulkLookupSchema, companyProspectingSchema, companyEnrichSchema, companyFiltersSchema } from '../schemas';
 import { z } from 'zod';
 
 export interface ToolDefinition {
@@ -75,5 +76,30 @@ export const tools: ToolDefinition[] = [
         Based on: https://docs.lusha.com/apis/openapi/company-search-and-enrich/enrichprospectingcompanies`,
     schema: companyEnrichSchema,
     handler: companyEnrichHandler
+  },
+  {
+    name: "companyFilters",
+    description: `Get available filter options for company prospecting using Lusha's Filters API.
+        This tool helps you discover what filter values are available before using the prospectingCompany tool.
+        
+        AVAILABLE FILTER TYPES:
+        - names: Company names available for filtering
+        - industries: Industry classifications with main and sub-industries  
+        - sizes: Available company size ranges
+        - revenues: Available revenue ranges
+        - locations: Search for geographic locations (requires searchText)
+        - sics: Standard Industrial Classification codes
+        - naics: North American Industry Classification System codes
+        - intentTopics: Available intent topics
+        - technologies: Search for technologies (requires searchText)
+        
+        IMPORTANT:
+        - No credits are charged for this tool - metadata retrieval only
+        - For 'locations' and 'technologies' filter types, you must provide searchText
+        - Use this tool to explore available options before building prospecting queries
+        
+        Based on: https://docs.lusha.com/apis/openapi/company-filters`,
+    schema: companyFiltersSchema,
+    handler: companyFiltersHandler
   }
 ];

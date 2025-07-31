@@ -213,3 +213,19 @@ export const companyEnrichSchema = z.object({
 });
 
 export type CompanyEnrichParams = z.infer<typeof companyEnrichSchema>;
+
+// Company Filters Schema
+export const companyFiltersSchema = z.object({
+  filterType: z.enum([
+    'sizes',
+    'revenues', 
+    'industries',
+    'sics',
+    'naics',
+    'intentTopics',
+    'locations',
+    'technologies'
+  ]).optional().default('sizes').describe("Type of filter to retrieve")
+});
+
+export type CompanyFiltersParams = z.infer<typeof companyFiltersSchema>;
