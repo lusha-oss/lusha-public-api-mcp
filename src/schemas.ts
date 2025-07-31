@@ -202,3 +202,14 @@ export const companyProspectingSchema = z.object({
 });
 
 export type CompanyProspectingParams = z.infer<typeof companyProspectingSchema>;
+
+// Company Enrich Schema
+export const companyEnrichSchema = z.object({
+  requestId: z.string().min(1, "Request ID is required").describe("The requestId from the Prospecting Search response"),
+  companiesIds: z.array(z.string())
+    .min(1, "At least one company ID is required")
+    .max(50, "Cannot enrich more than 50 companies at once")
+    .describe("An array of company IDs for enrichment. Min 1, max 50.")
+});
+
+export type CompanyEnrichParams = z.infer<typeof companyEnrichSchema>;

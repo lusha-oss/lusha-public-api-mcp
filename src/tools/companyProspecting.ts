@@ -81,7 +81,6 @@ export const companyProspectingHandler = async (params: CompanyProspectingParams
       type: "success",
       data: {
         ...searchResponse.data,
-        requestId,
         timestamp: new Date().toISOString(),
         credits_used: 0,
         search_only: true

@@ -1,7 +1,8 @@
 import { personBulkLookupHandler } from '../tools/personBulkLookup';
 import { companyBulkLookupHandler } from '../tools/companyLookup';
 import { companyProspectingHandler } from '../tools/companyProspecting';
-import { personBulkLookupSchema, companyBulkLookupSchema, companyProspectingSchema } from '../schemas';
+import { companyEnrichHandler } from '../tools/companyEnrich';
+import { personBulkLookupSchema, companyBulkLookupSchema, companyProspectingSchema, companyEnrichSchema } from '../schemas';
 import { z } from 'zod';
 
 export interface ToolDefinition {
@@ -54,5 +55,25 @@ export const tools: ToolDefinition[] = [
         Based on: https://docs.lusha.com/apis/openapi/company-search-and-enrich/searchprospectingcompanies`,
     schema: companyProspectingSchema,
     handler: companyProspectingHandler
+  },
+  {
+    name: "companyEnrich",
+    description: `Enrich companies from prospecting search results using Lusha's Prospecting API.
+        This is step 3 of the prospecting process where credits are charged.
+        
+        REQUIREMENTS:
+        - requestId: Must be from a previous prospectingCompany search response
+        - companiesIds: Array of company IDs from the search results (1-50 companies)
+        
+        IMPORTANT:
+        - Credits are charged at this step - one credit per successfully enriched company
+        - Use this after getting search results from the prospectingCompany tool
+        - Maximum 50 companies can be enriched in a single request
+        - The enriched companies will be returned in the response
+        - Should return the credits used for the request
+        
+        Based on: https://docs.lusha.com/apis/openapi/company-search-and-enrich/enrichprospectingcompanies`,
+    schema: companyEnrichSchema,
+    handler: companyEnrichHandler
   }
 ];
