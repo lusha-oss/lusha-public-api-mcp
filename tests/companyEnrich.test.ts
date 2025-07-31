@@ -147,7 +147,7 @@ describe('companyEnrich', () => {
       // Arrange
       const params = {
         requestId: 'valid-request-id',
-        companiesIds: Array.from({ length: 101 }, (_, i) => `company-${i}`)
+        companiesIds: Array.from({ length: 51 }, (_, i) => `company-${i}`)
       } as any;
 
       // Act
@@ -156,7 +156,7 @@ describe('companyEnrich', () => {
       // Assert
       expect(result.type).toBe('error');
       if (result.type === 'error') {
-        expect(result.error.message).toContain('Cannot enrich more than 100 companies at once');
+        expect(result.error.message).toContain('Cannot enrich more than 50 companies at once');
         expect(result.error.status).toBe(400);
       }
       expect(mockClient.post).not.toHaveBeenCalled();
