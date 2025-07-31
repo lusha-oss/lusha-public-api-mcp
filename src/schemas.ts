@@ -217,3 +217,72 @@ export type PersonBulkLookupParams = z.infer<typeof personBulkLookupSchema>;
 export type CompanyBulkLookupParams = z.infer<typeof companyBulkLookupSchema>;
 export type ContactEnrichParams = z.infer<typeof contactEnrichSchema>;
 export type ContactFiltersParams = z.infer<typeof contactFiltersSchema>;
+
+// Company Prospecting Schema - Simple flat structure to avoid MCP issues
+export const companyProspectingSchema = z.object({
+  filters: z.object({
+    companies: z.object({
+      include: z.object({
+        names: z.array(z.string()).optional().describe("Company names to include"),
+        domains: z.array(z.string()).optional().describe("Company domains to include (e.g., ['microsoft.com', 'google.com'])"),
+        locations: z.array(z.object({
+          country: z.string().describe("Country name")
+        })).optional().describe("Geographic locations to include"),
+        technologies: z.array(z.string()).optional().describe("Technologies used by companies (e.g., ['Amazon', 'React'])"),
+        mainIndustriesIds: z.array(z.string()).optional().describe("Main industry classification IDs"),
+        subIndustriesIds: z.array(z.number()).optional().describe("Sub-industry classification IDs"),
+        intentTopics: z.array(z.string()).optional().describe("Intent topics like 'Digital Sales'"),
+        sizes: z.array(z.object({
+          min: z.number().min(1).describe("Minimum company size"),
+          max: z.number().min(1).describe("Maximum company size")
+        })).optional().describe("Company size ranges"),
+        revenues: z.array(z.object({
+          min: z.number().min(1).describe("Minimum annual revenue in USD"),
+          max: z.number().min(1).describe("Maximum annual revenue in USD")
+        })).optional().describe("Company revenue ranges"),
+        sics: z.array(z.string()).optional().describe("Standard Industrial Classification codes (e.g., ['1011', '1021'])"),
+        naics: z.array(z.string()).optional().describe("North American Industry Classification codes (e.g., ['511210', '541511'])"),
+        naicsCodes: z.array(z.string()).optional().describe("NAICS codes (alias for naics)")
+      }).optional().describe("Companies to include based on criteria"),
+      exclude: z.object({
+        names: z.array(z.string()).optional().describe("Company names to exclude"),
+        domains: z.array(z.string()).optional().describe("Company domains to exclude"),
+        locations: z.array(z.object({
+          country: z.string().describe("Country name")
+        })).optional().describe("Geographic locations to exclude"),
+        technologies: z.array(z.string()).optional().describe("Technologies to exclude"),
+        mainIndustriesIds: z.array(z.string()).optional().describe("Main industry IDs to exclude"),
+        subIndustriesIds: z.array(z.number()).optional().describe("Sub-industry IDs to exclude"),
+        intentTopics: z.array(z.string()).optional().describe("Intent topics to exclude"),
+        sizes: z.array(z.object({
+          min: z.number().min(1).describe("Minimum company size"),
+          max: z.number().min(1).describe("Maximum company size")
+        })).optional().describe("Company size ranges to exclude"),
+        revenues: z.array(z.object({
+          min: z.number().min(1).describe("Minimum annual revenue in USD"),
+          max: z.number().min(1).describe("Maximum annual revenue in USD")
+        })).optional().describe("Company revenue ranges to exclude"),
+        sics: z.array(z.string()).optional().describe("SIC codes to exclude"),
+        naics: z.array(z.string()).optional().describe("NAICS codes to exclude"),
+        naicsCodes: z.array(z.string()).optional().describe("NAICS codes to exclude (alias for naics)")
+      }).optional().describe("Companies to exclude based on criteria")
+    }).describe("Company filtering criteria")
+  }).describe("Search filters"),
+  pages: z.object({
+    page: z.number().min(0).describe("Page number (0-based indexing)"),
+    size: z.number().min(1).max(100).describe("Number of results per page")
+  }).optional().describe("Pagination settings")
+});
+
+export type CompanyProspectingParams = z.infer<typeof companyProspectingSchema>;
+
+// Company Enrich Schema
+export const companyEnrichSchema = z.object({
+  requestId: z.string().min(1, "Request ID is required").describe("The requestId from the Prospecting Search response"),
+  companiesIds: z.array(z.string())
+    .min(1, "At least one company ID is required")
+    .max(50, "Cannot enrich more than 50 companies at once")
+    .describe("An array of company IDs for enrichment. Min 1, max 50.")
+});
+
+export type CompanyEnrichParams = z.infer<typeof companyEnrichSchema>;

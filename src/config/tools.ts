@@ -3,13 +3,15 @@ import { companyBulkLookupHandler } from '../tools/companyLookup';
 import { contactSearchHandler } from '../tools/contactSearch';
 import { contactEnrichHandler } from '../tools/contactEnrich';
 import { contactFiltersHandler } from '../tools/contactFilters';
-import { personBulkLookupSchema, companyBulkLookupSchema, contactSearchSchema, contactEnrichSchema, contactFiltersSchema } from '../schemas';
+import { personBulkLookupSchema, companyBulkLookupSchema, contactSearchSchema, contactEnrichSchema, contactFiltersSchema , companyProspectingSchema, companyEnrichSchema } from '../schemas';
+import { companyProspectingHandler } from '../tools/companyProspecting';
+import { companyEnrichHandler } from '../tools/companyEnrich';
 import { z } from 'zod';
 
 export interface ToolDefinition {
   name: string;
   description: string;
-  schema: z.ZodObject<any>;
+  schema: z.ZodType<any>;
   handler: (args: any) => Promise<any>;
 }
 
@@ -90,5 +92,45 @@ export const tools: ToolDefinition[] = [
         5. locations - Search for locations by text (requires locationSearchText parameter)`,
     schema: contactFiltersSchema,
     handler: contactFiltersHandler
+  },
+  {
+    name: "prospectingCompany",
+    description: `Search for companies using advanced filters via Lusha's Prospecting API.
+        This tool implements company search only.
+        
+        FEATURES:
+        - Filter by company attributes (domains, industries, locations, technologies, sizes, revenues, etc.)
+        - Support for include/exclude filtering patterns
+        - Pagination support for large result sets
+        
+        FILTERS AVAILABLE:
+        - Company domains (e.g., ['microsoft.com', 'google.com'])
+        - NAICS codes (e.g., ['511210', '541511'])
+        - Company names, locations, technologies, industries
+        - Size ranges, revenue ranges, SIC codes
+        
+        Based on: https://docs.lusha.com/apis/openapi/company-search-and-enrich/searchprospectingcompanies`,
+    schema: companyProspectingSchema,
+    handler: companyProspectingHandler
+  },
+  {
+    name: "companyEnrich",
+    description: `Enrich companies from prospecting search results using Lusha's Prospecting API.
+        This is step 3 of the prospecting process where credits are charged.
+        
+        REQUIREMENTS:
+        - requestId: Must be from a previous prospectingCompany search response
+        - companiesIds: Array of company IDs from the search results (1-50 companies)
+        
+        IMPORTANT:
+        - Credits are charged at this step - one credit per successfully enriched company
+        - Use this after getting search results from the prospectingCompany tool
+        - Maximum 50 companies can be enriched in a single request
+        - The enriched companies will be returned in the response
+        - Should return the credits used for the request
+        
+        Based on: https://docs.lusha.com/apis/openapi/company-search-and-enrich/enrichprospectingcompanies`,
+    schema: companyEnrichSchema,
+    handler: companyEnrichHandler
   }
 ];
