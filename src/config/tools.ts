@@ -39,19 +39,19 @@ export const tools: ToolDefinition[] = [
   },
   {
     name: "prospectingCompany",
-    description: `Search for companies using advanced filters via Lusha's Prospecting API.
-        This tool implements company search only.
+    description: `Search for companies using advanced filters. Returns basic company info only - does NOT auto-enrich.
+        Ask user before enriching results (costs credits).
         
-        FEATURES:
-        - Filter by company attributes (domains, industries, locations, technologies, sizes, revenues, etc.)
-        - Support for include/exclude filtering patterns
-        - Pagination support for large result sets
+        FILTERS:
+        - locations: [{ country: "United States" }] - countries, states, cities
+        - technologies: ["React", "Python", "AWS"] - tech stack used
+        - industries: ["Technology", "Healthcare"] - use companyFilters for full list
+        - sizes: [{ min: 11, max: 50 }] - employee count ranges
+        - revenues: [{ min: 1000000, max: 10000000 }] - annual USD
+        - domains: ["microsoft.com"] - company websites
+        - naics: ["511210", "541511"] - industry classification codes
         
-        FILTERS AVAILABLE:
-        - Company domains (e.g., ['microsoft.com', 'google.com'])
-        - NAICS codes (e.g., ['511210', '541511'])
-        - Company names, locations, technologies, industries
-        - Size ranges, revenue ranges, SIC codes
+        TIPS: Use broader filters if no results. Combine filters for precision. Use companyFilters to see available values.
         
         Based on: https://docs.lusha.com/apis/openapi/company-search-and-enrich/searchprospectingcompanies`,
     schema: companyProspectingSchema,
@@ -59,19 +59,14 @@ export const tools: ToolDefinition[] = [
   },
   {
     name: "companyEnrich",
-    description: `Enrich companies from prospecting search results using Lusha's Prospecting API.
-        This is step 3 of the prospecting process where credits are charged.
+    description: `Get detailed company information from search results. WARNING: CHARGES CREDITS - always ask user first!
         
         REQUIREMENTS:
-        - requestId: Must be from a previous prospectingCompany search response
-        - companiesIds: Array of company IDs from the search results (1-50 companies)
+        - requestId: from prospectingCompany search response
+        - companiesIds: array of company IDs (max 50)
+        - User explicit consent required
         
-        IMPORTANT:
-        - Credits are charged at this step - one credit per successfully enriched company
-        - Use this after getting search results from the prospectingCompany tool
-        - Maximum 50 companies can be enriched in a single request
-        - The enriched companies will be returned in the response
-        - Should return the credits used for the request
+        One credit charged per company enriched. Use only when user requests detailed information.
         
         Based on: https://docs.lusha.com/apis/openapi/company-search-and-enrich/enrichprospectingcompanies`,
     schema: companyEnrichSchema,
@@ -79,24 +74,13 @@ export const tools: ToolDefinition[] = [
   },
   {
     name: "companyFilters",
-    description: `Get available filter options for company prospecting using Lusha's Filters API.
-        This tool helps you discover what filter values are available before using the prospectingCompany tool.
+    description: `Get available filter options for company prospecting. No credits charged.
         
-        AVAILABLE FILTER TYPES:
-        - names: Company names available for filtering
-        - industries: Industry classifications with main and sub-industries  
-        - sizes: Available company size ranges
-        - revenues: Available revenue ranges
-        - locations: Search for geographic locations (requires searchText)
-        - sics: Standard Industrial Classification codes
-        - naics: North American Industry Classification System codes
-        - intentTopics: Available intent topics
-        - technologies: Search for technologies (requires searchText)
+        FILTER TYPES:
+        - names, industries, sizes, revenues, sics, naics, intentTopics
+        - locations, technologies (require searchText parameter)
         
-        IMPORTANT:
-        - No credits are charged for this tool - metadata retrieval only
-        - For 'locations' and 'technologies' filter types, you must provide searchText
-        - Use this tool to explore available options before building prospecting queries
+        Use to explore available filter values before building prospecting queries.
         
         Based on: https://docs.lusha.com/apis/openapi/company-filters`,
     schema: companyFiltersSchema,
