@@ -3,7 +3,19 @@ import { companyBulkLookupHandler } from '../tools/companyLookup';
 import { companyProspectingHandler } from '../tools/companyProspecting';
 import { companyEnrichHandler } from '../tools/companyEnrich';
 import { companyFiltersHandler } from '../tools/companyFilters';
-import { personBulkLookupSchema, companyBulkLookupSchema, companyProspectingSchema, companyEnrichSchema, companyFiltersSchema } from '../schemas';
+import { contactSearchHandler } from '../tools/contactSearch';
+import { contactEnrichHandler } from '../tools/contactEnrich';
+import { contactFiltersHandler } from '../tools/contactFilters';
+import { 
+  personBulkLookupSchema, 
+  companyBulkLookupSchema, 
+  companyProspectingSchema, 
+  companyEnrichSchema, 
+  companyFiltersSchema,
+  contactSearchSchema, 
+  contactEnrichSchema, 
+  contactFiltersSchema 
+} from '../schemas';
 import { z } from 'zod';
 
 export interface ToolDefinition {
@@ -39,19 +51,46 @@ export const tools: ToolDefinition[] = [
   },
   {
     name: "prospectingCompany",
-    description: `Search for companies using advanced filters. Returns basic company info only - does NOT auto-enrich.
-        Ask user before enriching results (costs credits).
+    description: `Search for companies using advanced filters via Lusha's Prospecting API.
+        This tool implements company search only.
         
-        FILTERS:
-        - locations: [{ country: "United States" }] - countries, states, cities
-        - technologies: ["React", "Python", "AWS"] - tech stack used
-        - industries: ["Technology", "Healthcare"] - use companyFilters for full list
-        - sizes: [{ min: 11, max: 50 }] - employee count ranges
-        - revenues: [{ min: 1000000, max: 10000000 }] - annual USD
-        - domains: ["microsoft.com"] - company websites
-        - naics: ["511210", "541511"] - industry classification codes
+        **Important**: No credits are charged for searches. Credits are only charged during enrichment.
         
-        TIPS: Use broader filters if no results. Combine filters for precision. Use companyFilters to see available values.
+        AVAILABLE FILTERS:
+        
+        LOCATIONS:
+        - Usage: filters.companies.include.locations = [{ country: "United States" }]
+        - Examples: "United States", "California", "New York", "London", "Germany"
+        
+        TECHNOLOGIES:
+        - Usage: filters.companies.include.technologies = ["React", "Python"]
+        - Examples: "React", "Python", "AWS", "Salesforce", "Microsoft", "Docker"
+        
+        INDUSTRIES:
+        - Usage: Use companyFilters tool with filterType='industries' for complete list
+        - Examples: "Technology", "Healthcare", "Finance", "Manufacturing", "Education"
+        
+        COMPANY SIZES (employee count):
+        - Usage: filters.companies.include.sizes = [{ min: 11, max: 50 }]
+        - Examples: {min: 1, max: 10}, {min: 11, max: 50}, {min: 51, max: 200}, {min: 201, max: 500}
+        
+        REVENUES (annual USD):
+        - Usage: filters.companies.include.revenues = [{ min: 1000000, max: 10000000 }]
+        - Examples: {min: 1M, max: 10M}, {min: 10M, max: 100M}
+        
+        DOMAINS:
+        - Usage: filters.companies.include.domains = ["microsoft.com"]
+        - Examples: "microsoft.com", "google.com", "amazon.com"
+        
+        NAICS CODES:
+        - Usage: filters.companies.include.naics = ["511210", "541511"]
+        - Use companyFilters tool with filterType='naics' for complete list
+        
+        SEARCH TIPS:
+        - Use broader filters if you get 0 results (e.g., country instead of city)
+        - Combine multiple filter types for precise targeting
+        - Use exclude filters to remove unwanted results
+        - Use the companyFilters tool to discover all available filter values
         
         Based on: https://docs.lusha.com/apis/openapi/company-search-and-enrich/searchprospectingcompanies`,
     schema: companyProspectingSchema,
@@ -85,5 +124,91 @@ export const tools: ToolDefinition[] = [
         Based on: https://docs.lusha.com/apis/openapi/company-filters`,
     schema: companyFiltersSchema,
     handler: companyFiltersHandler
+  },
+  {
+    name: "prospectingContact",
+    description: `Search for contacts using various filters. This is step 2 of the prospecting process.
+        
+        **Important**: No credits are charged for searches. Credits are only charged during enrichment.
+        
+        AVAILABLE FILTERS:
+        
+        CONTACT PROPERTIES:
+        - departments: ["Engineering & Technical", "Marketing"]
+        - seniority: ["Director", "Manager"] (use contactFilters to get available levels)
+        - existing_data_points: ["phone", "work_email", "mobile_phone"] (use contactFilters for options)
+        - locations: [{ continent: "North America", country: "United States", city: "New York", state: "New York", country_grouping: "na" }]
+        
+        COMPANY PROPERTIES:
+        - names: ["Apple", "Microsoft"] (company names)
+        - locations: [{ country: "United States" }] (company headquarters)
+        - technologies: ["Salesforce", "Amazon Web Services"] (tech stack used)
+        - mainIndustriesIds: [4, 5] (main industry sectors)
+        - subIndustriesIds: [101] (sub-industry categories)
+        - intentTopics: ["Digital Sales"] (company intent signals)
+        - sizes: [{ min: 100, max: 1000 }] (employee count ranges)
+        - revenues: [{ min: 10000000, max: 100000000 }] (revenue ranges)
+        - sicsCodes: ["1011", "1021"] (Standard Industrial Classification codes)
+        - naicsCodes: ["11", "21"] (North American Industry Classification codes)
+        
+        PAGINATION:
+        - Use 'pages' parameter: { page: 0, size: 20 }
+        - Default page size is 20 if not specified
+        - Page index starts from 0
+        
+        SEARCH TIPS:
+        - Use contactFilters tool to discover all available filter values
+        - Combine contact and company filters for precise targeting
+        - Use broader filters if you get 0 results
+        - Both include and exclude filters are supported
+        
+        Based on: https://docs.lusha.com/apis/openapi/contact-search-and-enrich/searchprospectingcontacts`,
+    schema: contactSearchSchema,
+    handler: contactSearchHandler
+  },
+  {
+    name: "contactEnrich",
+    description: `Enrich contacts from search results. This is step 3 of the prospecting process.
+        
+        REQUIREMENTS:
+        - requestId: The requestId generated in the Prospecting Search response (UUID)
+        - contactIds: Array containing the contact IDs for enrichment (Min 1, max 100)
+        
+        **Important Notice - Unified Credits Plan Required**
+        
+        | Parameter                     | Requirement                                                                                              |
+        | ----------------------------- | -------------------------------------------------------------------------------------------------------- |
+        | revealEmails and revealPhones | Only available to customers on the **Unified Credits** pricing plan                                      |
+        | Plan Restriction              | Attempting to use these parameters on other plans will result in a **403 Unauthorized** error            |
+        | Default Behavior              | When neither parameter is used, the API returns **both email addresses and phone numbers**, if available |
+        
+        USAGE:
+        - Set revealEmails=true to retrieve only the email address of the contact
+        - Set revealPhones=true to retrieve only the phone number of the contact
+        - Credits are charged for enrichment
+        
+        Based on: https://docs.lusha.com/apis/openapi/contact-search-and-enrich/enrichprospectingcontacts`,
+    schema: contactEnrichSchema,
+    handler: contactEnrichHandler
+  },
+  {
+    name: "contactFilters",
+    description: `Available filters for contact searches.
+        
+        AVAILABLE FILTER TYPES:
+        - departments: List of available departments
+        - seniority: List of available seniority levels  
+        - existing_data_points: List of available data points
+        - all_countries: List of available countries
+        - locations: Search for geographic locations (requires locationSearchText parameter)
+        
+        USAGE:
+        - No credits are charged for filter requests
+        - Use this tool to explore available options before building search queries
+        - For 'locations' filter type, you must provide locationSearchText parameter
+        
+        Based on: https://docs.lusha.com/apis/openapi/contact-search-and-enrich/searchprospectingcontacts`,
+    schema: contactFiltersSchema,
+    handler: contactFiltersHandler
   }
 ];

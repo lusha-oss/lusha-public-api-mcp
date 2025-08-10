@@ -132,6 +132,77 @@ export const companyBulkLookupSchema = z.object({
   }).optional()
 });
 
+export const contactSearchSchema = z.object({
+  pages: z.object({
+    page: z.number().min(0, "Page number must be 0 or greater"),
+    size: z.number().min(10, "Page size must be at least 10")
+  }).optional(),
+  offset: z.object({
+    index: z.number().min(0, "Offset index must be 0 or greater"),
+    size: z.number().min(10, "Offset size must be at least 10")
+  }).optional(),
+  filters: z.object({
+    contacts: z.object({
+      include: z.object({
+        departments: z.array(z.string()).optional(),
+        seniority: z.array(z.number()).optional(),
+        existing_data_points: z.array(z.string()).optional(),
+        locations: z.array(z.object({
+          continent: z.string().optional(),
+          country: z.string().optional(),
+          city: z.string().optional(),
+          state: z.string().optional(),
+          country_grouping: z.string().optional()
+        })).optional()
+      }).optional(),
+      exclude: z.object({}).optional()
+    }).optional(),
+    companies: z.object({
+      include: z.object({
+        names: z.array(z.string()).optional(),
+        locations: z.array(z.object({
+          country: z.string().optional()
+        })).optional(),
+        technologies: z.array(z.string()).optional(),
+        mainIndustriesIds: z.array(z.string()).optional(),
+        subIndustriesIds: z.array(z.number()).optional(),
+        intentTopics: z.array(z.string()).optional(),
+        sizes: z.array(z.object({
+          min: z.number(),
+          max: z.number()
+        })).optional(),
+        revenues: z.array(z.object({
+          min: z.number(),
+          max: z.number()
+        })).optional(),
+        sics: z.array(z.string()).optional(),
+        naics: z.array(z.string()).optional()
+      }).optional(),
+      exclude: z.object({}).optional()
+    }).optional()
+  })
+});
+
+export const contactEnrichSchema = z.object({
+  requestId: z.string().uuid("Request ID must be a valid UUID").describe("The requestId generated in the Prospecting Search response (UUID)"),
+  contactIds: z.array(z.string())
+    .min(1, "Contact IDs array cannot be empty")
+    .max(100, "Contact IDs array cannot exceed 100 items")
+    .describe("An array containing the contact IDs for enrichment"),
+  revealEmails: z.boolean().optional().describe("Set revealEmails=true to retrieve only the email address of the contact"),
+  revealPhones: z.boolean().optional().describe("Set revealPhones=true to retrieve only the phone number of the contact")
+});
+
+export const contactFiltersSchema = z.object({
+  filterType: z.enum([
+    "departments",
+    "seniority",
+    "existing_data_points",
+    "all_countries"
+  ]).describe("The type of filter to retrieve"),
+  locationSearchText: z.string().optional().describe("Search text for location when using locations filter")
+});
+
 export {
   personLookupSchema,
   bulkContactSchema,
@@ -229,3 +300,6 @@ export const companyFiltersSchema = z.object({
 });
 
 export type CompanyFiltersParams = z.infer<typeof companyFiltersSchema>;
+
+export type ContactEnrichParams = z.infer<typeof contactEnrichSchema>;
+export type ContactFiltersParams = z.infer<typeof contactFiltersSchema>;
