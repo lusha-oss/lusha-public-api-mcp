@@ -54,7 +54,10 @@ export const tools: ToolDefinition[] = [
     description: `Search for companies using advanced filters via Lusha's Prospecting API.
         This tool implements company search only.
         
-        **Important**: No credits are charged for searches. Credits are only charged during enrichment.
+        **Important Credit Information**:
+        - Credit usage for search operations depends on your Lusha account plan
+        - Check your billing.creditsCharged in the response for actual credit consumption
+        - Additional credits are charged for enrichment operations using the companyEnrich tool
         
         AVAILABLE FILTERS:
         

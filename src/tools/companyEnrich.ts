@@ -69,8 +69,7 @@ export async function companyEnrichHandler(params: any): Promise<ToolResponse> {
       data: {
         requestId: enrichData.requestId,
         companies: enrichData.companies || [],
-        enriched_count: enrichData.companies?.length || 0,
-        credits_used: enrichData.companies?.length || 0 // Credits are charged per enriched company
+        credits_used: enrichData.billing.creditsCharged
       }
     };
 
