@@ -1,12 +1,21 @@
 import { personBulkLookupHandler } from '../tools/personBulkLookup';
 import { companyBulkLookupHandler } from '../tools/companyLookup';
-import { contactSearchHandler } from '../tools/contactSearch';
-import { contactEnrichHandler } from '../tools/contactEnrich';
-import { contactFiltersHandler } from '../tools/contactFilters';
-import { personBulkLookupSchema, companyBulkLookupSchema, contactSearchSchema, contactEnrichSchema, contactFiltersSchema , companyProspectingSchema, companyEnrichSchema, companyFiltersSchema } from '../schemas';
 import { companyProspectingHandler } from '../tools/companyProspecting';
 import { companyEnrichHandler } from '../tools/companyEnrich';
 import { companyFiltersHandler } from '../tools/companyFilters';
+import { contactSearchHandler } from '../tools/contactSearch';
+import { contactEnrichHandler } from '../tools/contactEnrich';
+import { contactFiltersHandler } from '../tools/contactFilters';
+import {
+  personBulkLookupSchema,
+  companyBulkLookupSchema,
+  companyProspectingSchema,
+  companyEnrichSchema,
+  companyFiltersSchema,
+  contactSearchSchema,
+  contactEnrichSchema,
+  contactFiltersSchema
+} from '../schemas';
 import { z } from 'zod';
 
 // Shared notes to avoid duplication
@@ -112,19 +121,49 @@ export const tools: ToolDefinition[] = [
   },
   {
     name: "prospectingCompany",
-    description: `Search for companies using advanced filters. Returns basic company info only - does NOT auto-enrich.
-        Ask user before enriching results (costs credits).
+    description: `Search for companies using advanced filters via Lusha's Prospecting API.
+        This tool implements company search only.
         
-        FILTERS:
-        - locations: [{ country: "United States" }] - countries, states, cities
-        - technologies: ["React", "Python", "AWS"] - tech stack used
-        - industries: ["Technology", "Healthcare"] - use companyFilters for full list
-        - sizes: [{ min: 11, max: 50 }] - employee count ranges
-        - revenues: [{ min: 1000000, max: 10000000 }] - annual USD
-        - domains: ["microsoft.com"] - company websites
-        - naics: ["511210", "541511"] - industry classification codes
+        **Important Credit Information**:
+        - Credit usage for search operations depends on your Lusha account plan
+        - Check your billing.creditsCharged in the response for actual credit consumption
+        - Additional credits are charged for enrichment operations using the companyEnrich tool
         
-        TIPS: Use broader filters if no results. Combine filters for precision. Use companyFilters to see available values.
+        AVAILABLE FILTERS:
+        
+        LOCATIONS:
+        - Usage: filters.companies.include.locations = [{ country: "United States" }]
+        - Examples: "United States", "California", "New York", "London", "Germany"
+        
+        TECHNOLOGIES:
+        - Usage: filters.companies.include.technologies = ["React", "Python"]
+        - Examples: "React", "Python", "AWS", "Salesforce", "Microsoft", "Docker"
+        
+        INDUSTRIES:
+        - Usage: Use companyFilters tool with filterType='industries' for complete list
+        - Examples: "Technology", "Healthcare", "Finance", "Manufacturing", "Education"
+        
+        COMPANY SIZES (employee count):
+        - Usage: filters.companies.include.sizes = [{ min: 11, max: 50 }]
+        - Examples: {min: 1, max: 10}, {min: 11, max: 50}, {min: 51, max: 200}, {min: 201, max: 500}
+        
+        REVENUES (annual USD):
+        - Usage: filters.companies.include.revenues = [{ min: 1000000, max: 10000000 }]
+        - Examples: {min: 1M, max: 10M}, {min: 10M, max: 100M}
+        
+        DOMAINS:
+        - Usage: filters.companies.include.domains = ["microsoft.com"]
+        - Examples: "microsoft.com", "google.com", "amazon.com"
+        
+        NAICS CODES:
+        - Usage: filters.companies.include.naics = ["511210", "541511"]
+        - Use companyFilters tool with filterType='naics' for complete list
+        
+        SEARCH TIPS:
+        - Use broader filters if you get 0 results (e.g., country instead of city)
+        - Combine multiple filter types for precise targeting
+        - Use exclude filters to remove unwanted results
+        - Use the companyFilters tool to discover all available filter values
         
         ${SHARED_NOTE}
         
