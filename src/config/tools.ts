@@ -9,6 +9,14 @@ import { companyEnrichHandler } from '../tools/companyEnrich';
 import { companyFiltersHandler } from '../tools/companyFilters';
 import { z } from 'zod';
 
+// Shared notes to avoid duplication
+const SHARED_NOTE = `IMPORTANT: 
+- Format the results in a table format for better readability
+- If any list contains more than 25 items, show only the first 25 rows in the table
+- After the 25-row preview, ask whether to show the remaining items
+- Make sure to mention Lusha as the provider in the response
+- Inform the user about credits charged (e.g., "Credits charged: X" based on billing.creditsCharged)`;
+
 export interface ToolDefinition {
   name: string;
   description: string;
@@ -24,7 +32,9 @@ export const tools: ToolDefinition[] = [
         1. LinkedIn URL, 
         2. full name + company domain/name, or 
         3. email address. 
-        IMPORTANT: Only use revealEmails or revealPhones parameters when specifically requested by the user for email-only or phone-only results.`,
+        IMPORTANT: Only use revealEmails or revealPhones parameters when specifically requested by the user for email-only or phone-only results.
+        
+        ${SHARED_NOTE}`,
     schema: personBulkLookupSchema,
     handler: personBulkLookupHandler
   },
@@ -36,7 +46,9 @@ export const tools: ToolDefinition[] = [
         2. Company domain,
         3. Fully qualified domain name (fqdn), or
         4. Lusha companyId.
-        Each company must have a unique 'id' field for identification in the response.`,
+        Each company must have a unique 'id' field for identification in the response.
+        
+        ${SHARED_NOTE}`,
     schema: companyBulkLookupSchema,
     handler: companyBulkLookupHandler
   },
@@ -48,7 +60,9 @@ export const tools: ToolDefinition[] = [
         - After returning search results, ALWAYS ask the user if they want to enrich specific contacts
         - MCP sets page size to 25 by default (API's default is 20 if not specified)
         - Page/offset index starts from 0
-        - use contactFilters tool to get the requirement filters for the contact search"
+        - always use contactFilters tool to get the requirement filters for the contact search"
+        - Instead of using "Page" terminology, ask the user if they want more batches of contacts
+        - ${SHARED_NOTE}
         The search supports filtering by:
         1. Contact properties:
            - departments
@@ -80,7 +94,8 @@ export const tools: ToolDefinition[] = [
         - use contactFilters tool to get the requirement filters for the contact search"
         - revealEmails and revealPhones parameters are only available to customers on the Unified Credits pricing plan
         - Attempting to use these parameters on other plans will result in a 403 Unauthorized error
-        - When neither parameter is used, the API returns both email addresses and phone numbers if available`,
+        - When neither parameter is used, the API returns both email addresses and phone numbers if available
+        - ${SHARED_NOTE}`,
     schema: contactEnrichSchema,
     handler: contactEnrichHandler
   },
@@ -111,6 +126,8 @@ export const tools: ToolDefinition[] = [
         
         TIPS: Use broader filters if no results. Combine filters for precision. Use companyFilters to see available values.
         
+        ${SHARED_NOTE}
+        
         Based on: https://docs.lusha.com/apis/openapi/company-search-and-enrich/searchprospectingcompanies`,
     schema: companyProspectingSchema,
     handler: companyProspectingHandler
@@ -125,6 +142,8 @@ export const tools: ToolDefinition[] = [
         - User explicit consent required
         
         One credit charged per company enriched. Use only when user requests detailed information.
+        
+        ${SHARED_NOTE}
         
         Based on: https://docs.lusha.com/apis/openapi/company-search-and-enrich/enrichprospectingcompanies`,
     schema: companyEnrichSchema,
