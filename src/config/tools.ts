@@ -24,7 +24,9 @@ const SHARED_NOTE = `IMPORTANT:
 - If any list contains more than 25 items, show only the first 25 rows in the table
 - After the 25-row preview, ask whether to show the remaining items
 - Make sure to mention Lusha as the provider in the response
-- Inform the user about credits charged (e.g., "Credits charged: X" based on billing.creditsCharged)`;
+- Inform the user about credits charged (e.g., "Credits charged: X" based on billing.creditsCharged)
+- Instead of using "Page" terminology, ask the user if they want more batches of contacts
+`;
 
 export interface ToolDefinition {
   name: string;
@@ -41,9 +43,7 @@ export const tools: ToolDefinition[] = [
         1. LinkedIn URL, 
         2. full name + company domain/name, or 
         3. email address. 
-        IMPORTANT: Only use revealEmails or revealPhones parameters when specifically requested by the user for email-only or phone-only results.
-        
-        ${SHARED_NOTE}`,
+        IMPORTANT: Only use revealEmails or revealPhones parameters when specifically requested by the user for email-only or phone-only results.`,
     schema: personBulkLookupSchema,
     handler: personBulkLookupHandler
   },
@@ -55,9 +55,7 @@ export const tools: ToolDefinition[] = [
         2. Company domain,
         3. Fully qualified domain name (fqdn), or
         4. Lusha companyId.
-        Each company must have a unique 'id' field for identification in the response.
-        
-        ${SHARED_NOTE}`,
+        Each company must have a unique 'id' field for identification in the response.`,
     schema: companyBulkLookupSchema,
     handler: companyBulkLookupHandler
   },
@@ -70,7 +68,6 @@ export const tools: ToolDefinition[] = [
         - MCP sets page size to 25 by default (API's default is 20 if not specified)
         - Page/offset index starts from 0
         - always use contactFilters tool to get the requirement filters for the contact search"
-        - Instead of using "Page" terminology, ask the user if they want more batches of contacts
         - ${SHARED_NOTE}
         The search supports filtering by:
         1. Contact properties:
@@ -100,7 +97,6 @@ export const tools: ToolDefinition[] = [
         IMPORTANT: 
         - The requestId parameter MUST be the exact UUID received from the contactSearch response
         - ALWAYS ask the user which specific contacts they want to enrich before proceeding
-        - use contactFilters tool to get the requirement filters for the contact search"
         - revealEmails and revealPhones parameters are only available to customers on the Unified Credits pricing plan
         - Attempting to use these parameters on other plans will result in a 403 Unauthorized error
         - When neither parameter is used, the API returns both email addresses and phone numbers if available
@@ -120,7 +116,7 @@ export const tools: ToolDefinition[] = [
     handler: contactFiltersHandler
   },
   {
-    name: "prospectingCompany",
+    name: "companySearch",
     description: `Search for companies using advanced filters via Lusha's Prospecting API.
         This tool implements company search only.
         
@@ -128,36 +124,17 @@ export const tools: ToolDefinition[] = [
         - Credit usage for search operations depends on your Lusha account plan
         - Check your billing.creditsCharged in the response for actual credit consumption
         - Additional credits are charged for enrichment operations using the companyEnrich tool
+        - use companyFilters tool to get the requirement filters for the company search
+        - max page size is 50
         
         AVAILABLE FILTERS:
-        
-        LOCATIONS:
-        - Usage: filters.companies.include.locations = [{ country: "United States" }]
-        - Examples: "United States", "California", "New York", "London", "Germany"
-        
-        TECHNOLOGIES:
-        - Usage: filters.companies.include.technologies = ["React", "Python"]
-        - Examples: "React", "Python", "AWS", "Salesforce", "Microsoft", "Docker"
-        
-        INDUSTRIES:
-        - Usage: Use companyFilters tool with filterType='industries' for complete list
-        - Examples: "Technology", "Healthcare", "Finance", "Manufacturing", "Education"
-        
-        COMPANY SIZES (employee count):
-        - Usage: filters.companies.include.sizes = [{ min: 11, max: 50 }]
-        - Examples: {min: 1, max: 10}, {min: 11, max: 50}, {min: 51, max: 200}, {min: 201, max: 500}
-        
-        REVENUES (annual USD):
-        - Usage: filters.companies.include.revenues = [{ min: 1000000, max: 10000000 }]
-        - Examples: {min: 1M, max: 10M}, {min: 10M, max: 100M}
-        
-        DOMAINS:
-        - Usage: filters.companies.include.domains = ["microsoft.com"]
-        - Examples: "microsoft.com", "google.com", "amazon.com"
-        
-        NAICS CODES:
-        - Usage: filters.companies.include.naics = ["511210", "541511"]
-        - Use companyFilters tool with filterType='naics' for complete list
+        - locations
+        - technologies
+        - industries
+        - sizes (employee count)
+        - revenues (annual USD)
+        - domains
+        - naics (North American Industry Classification System codes)
         
         SEARCH TIPS:
         - Use broader filters if you get 0 results (e.g., country instead of city)
