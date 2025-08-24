@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.2.0](https://github.com/lusha-oss/lusha-public-api-mcp/compare/v1.1.1...v1.2.0) (2025-08-24)
+
+
+### Features
+
+* add company enrichment tool and related schema, handler, and tests ([d8b0930](https://github.com/lusha-oss/lusha-public-api-mcp/commit/d8b0930d25c5a01d18bbffc4ea58c275834bae68))
+* add company filters tool and related schema, handler, and configuration ([3caf25e](https://github.com/lusha-oss/lusha-public-api-mcp/commit/3caf25e1f3b13ee75d81b31277ca3bdc09cee2a3))
+* add company prospecting tool and related tests ([f517418](https://github.com/lusha-oss/lusha-public-api-mcp/commit/f5174185eb334b3bc26cdbd0af91000d964e51a0))
+* add-contact-enrich-tool ([0d090f5](https://github.com/lusha-oss/lusha-public-api-mcp/commit/0d090f5ca184d4159ad177f53453691d98fe1613))
+* add-contact-enrich-tool ([5e64b23](https://github.com/lusha-oss/lusha-public-api-mcp/commit/5e64b232b458f8d4cf4679c052625965cec2acea))
+* add-contact-enrich-tool ([064cbb3](https://github.com/lusha-oss/lusha-public-api-mcp/commit/064cbb363a18d41c354b2b53068025e5a2ad7972))
+* add-contact-enrich-tool ([d280b94](https://github.com/lusha-oss/lusha-public-api-mcp/commit/d280b94e6dc65515e8c1c57210f314a3dccb0299))
+* add-contact-enrich-tool ([0924489](https://github.com/lusha-oss/lusha-public-api-mcp/commit/092448942b24c4a5fea0d7eac80a2d85165b8878))
+* add-contact-enrich-tool ([ab053dc](https://github.com/lusha-oss/lusha-public-api-mcp/commit/ab053dcf8acc8fa5846d2bd0682f6f43fffdcfe0))
+* add-contact-enrich-tool ([324b72e](https://github.com/lusha-oss/lusha-public-api-mcp/commit/324b72eee5f897b5895d316392e893281b2ef222))
+* add-contact-search-tool ([8c2104a](https://github.com/lusha-oss/lusha-public-api-mcp/commit/8c2104a21fa96973c056f943d07fcc055178c53e))
+
+
+### Bug Fixes
+
+* update company enrichment test to reflect new limit on company IDs ([97f73f7](https://github.com/lusha-oss/lusha-public-api-mcp/commit/97f73f70b499647c4a8a20ce0f900b7145216c7f))
+
 ## [1.1.1](https://github.com/lusha-oss/lusha-public-api-mcp/compare/v1.1.0...v1.1.1) (2025-07-08)
 
 
