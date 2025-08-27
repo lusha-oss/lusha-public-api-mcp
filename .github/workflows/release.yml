@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: read  # default, principle of least privilege
+  id-token: write
 
 jobs:
   build:
@@ -35,6 +36,7 @@ jobs:
     permissions:
       contents: read
       packages: write  # needed for npm publish
+      id-token: write
 
     steps:
       - name: Checkout repository
