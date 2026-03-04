@@ -69,7 +69,6 @@ describe('companyProspecting', () => {
         expect(result.data.requestId).toBeDefined();
         expect(typeof result.data.requestId).toBe('string');
         expect(result.data.data).toHaveLength(2);
-        expect(result.data.credits_used).toBe(0);
         expect(result.data.search_only).toBe(true);
       }
       expect(mockClient.post).toHaveBeenCalledTimes(1);

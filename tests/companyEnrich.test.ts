@@ -70,7 +70,6 @@ describe('companyEnrich', () => {
         expect(result.data.requestId).toBe('test-request-id-123');
         expect(result.data.companies).toHaveLength(2);
         expect(result.data.enriched_count).toBe(2);
-        expect(result.data.credits_used).toBe(2);
         expect(result.data.companies[0]).toHaveProperty('name', 'Microsoft Corporation');
         expect(result.data.companies[1]).toHaveProperty('name', 'Google LLC');
       }
@@ -207,7 +206,6 @@ describe('companyEnrich', () => {
       if (result.type === 'success') {
         expect(result.data.companies).toHaveLength(0);
         expect(result.data.enriched_count).toBe(0);
-        expect(result.data.credits_used).toBe(0);
       }
     });
 
