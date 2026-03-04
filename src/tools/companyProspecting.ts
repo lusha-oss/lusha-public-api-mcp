@@ -82,7 +82,6 @@ export const companyProspectingHandler = async (params: CompanyProspectingParams
       data: {
         ...searchResponse.data,
         timestamp: new Date().toISOString(),
-        credits_used: searchResponse.data.billing.creditsCharged
       }
     };
     

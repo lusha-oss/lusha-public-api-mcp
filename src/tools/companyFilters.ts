@@ -87,7 +87,6 @@ export const companyFiltersHandler = async (params: CompanyFiltersParams): Promi
         filterType,
         results: response.data,
         timestamp: new Date().toISOString(),
-        credits_used: 0
       }
     };
     
